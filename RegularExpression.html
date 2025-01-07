@@ -117,13 +117,38 @@
             let uPassword = $("#userPassword").val();
             let uConfirmPassword = $(this).val();
            
-            if(!(uPasswordRE.test(uPassword))){
+            if(uConfirmPassword != uPassword){
                 $(this).css('border','2px solid red')
-                $(this).next('small').show().text("invalid password pattern").css('color','red');
+                $(this).next('small').show().text("confirm password not matched")
+                .css('color','red');
             }
             else{
                 $(this).css('border','2px solid green')
                 $(this).next('small').hide();
+            }
+        })
+        function emptyfields(inp){
+            if($(inp).val() == ""){
+                $(inp).css('border','1px solid red');
+                $(inp).next('small').show().text('please fill out this field'). css('color','red');
+            }
+        }
+        $('button').click(function(){
+            let userName = $("#userName").val();
+            let userEmail = $("#userEmail").val();
+            let userPassword = $("#userPassword").val();
+            let userConfirmPassword = $("#userConfirmPassword").val();
+            let uNameRE = /^[a-zA-Z/s]{3,}$/;
+            let uEmailRE = /^[a-z0-9_.]{3,10}[@][a-z]{5}[.][a-z]{3}$/;
+            let uPasswordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z\d]).{8,}$/;
+            let users = JSON.parse(localStorage.getItem('student')) || [];
+            console.log(users);
+            if(uNameRE.test(userName) && uEmailRE.test(userEmail) && uPasswordRE.test(userPassword)){
+                users.push({stdName:userName , stdEmail:userEmail , stdPassword:userPassword});
+                localStorage.setItem('students',JSON.stringify(users));
+                alert('user added successfully');
+                $('input').val('');
+                location.assign('RegularExpression.html');
             }
         })
     </script>
